@@ -12,6 +12,7 @@ const errorMessage = document.querySelector("#error-message");
 const algorithmName = document.querySelector("#algorithm-name");
 const algorithmDescription = document.querySelector("#algorithm-description");
 const cppCodeRoot = document.querySelector("#cpp-code");
+const legendRoot = document.querySelector("#legend");
 
 const descriptions = {
   bubble: {
@@ -70,6 +71,24 @@ const codeSnippets = {
     "        }",
     "    }",
     "}"
+  ]
+};
+
+const legendItems = {
+  bubble: [
+    ["comparing", "比较"],
+    ["sorted", "已就位"]
+  ],
+  insertion: [
+    ["comparing", "比较"],
+    ["active", "移动 / 插入"],
+    ["placeholder", "空位"]
+  ],
+  selection: [
+    ["comparing", "比较"],
+    ["active", "当前元素"],
+    ["minimum", "当前最小值"],
+    ["sorted", "已就位"]
   ]
 };
 
@@ -483,6 +502,7 @@ function renderBars(step) {
   const min = Math.min(...visibleNumbers);
   const max = Math.max(...visibleNumbers);
   const range = Math.max(max - min, 1);
+  const isInsertion = algorithmSelect.value === "insertion";
 
   barsRoot.innerHTML = "";
   array.forEach((value, index) => {
@@ -497,15 +517,18 @@ function renderBars(step) {
 
     if (step.comparing.includes(index)) {
       bar.classList.add("comparing");
+      if (isInsertion) {
+        bar.classList.add("soft-comparing");
+      }
     }
     if (step.active.includes(index)) {
       bar.classList.add("active");
     }
-    if (step.minimum.includes(index)) {
+    if (!isInsertion && step.minimum.includes(index)) {
       bar.classList.add("minimum");
     }
     const isActionHighlighted = step.comparing.includes(index) || step.active.includes(index) || step.minimum.includes(index);
-    if (step.sorted.includes(index) && !isActionHighlighted) {
+    if (!isInsertion && step.sorted.includes(index) && !isActionHighlighted) {
       bar.classList.add("sorted");
     }
 
@@ -522,6 +545,20 @@ function renderBars(step) {
   animateSwap(step.swap);
   animateShift(step.shift);
   animateInsert(step.insert);
+}
+
+function renderLegend() {
+  legendRoot.innerHTML = "";
+  legendItems[algorithmSelect.value].forEach(([type, labelText]) => {
+    const item = document.createElement("span");
+    const dot = document.createElement("i");
+    const label = document.createElement("span");
+
+    dot.className = `legend-dot ${type}`;
+    label.textContent = labelText;
+    item.append(dot, label);
+    legendRoot.append(item);
+  });
 }
 
 function renderCppCode(step) {
@@ -556,6 +593,7 @@ function renderCppCode(step) {
 
 function renderStep() {
   const step = steps[currentStep];
+  renderLegend();
   renderBars(step);
   renderCppCode(step);
   stepTitle.textContent = step.message;
