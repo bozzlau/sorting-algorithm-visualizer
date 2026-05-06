@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>排序算法动画演示</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Algorithm Visualizer</p>
+        <h1>排序算法动画演示</h1>
+        <p class="subtitle">输入一组数字，观察冒泡排序、插入排序、选择排序如何一步一步把数据排成升序。</p>
+      </div>
+      <div class="hero-stats" aria-label="演示信息">
+        <span><strong>3</strong> 种算法</span>
+        <span><strong>2-30</strong> 个数字</span>
+        <span><strong>逐步</strong> 动画</span>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <aside class="control-panel" aria-label="控制面板">
+        <div class="field">
+          <label for="algorithm">排序算法</label>
+          <select id="algorithm">
+            <option value="bubble">冒泡排序</option>
+            <option value="insertion">插入排序</option>
+            <option value="selection">选择排序</option>
+          </select>
+        </div>
+
+        <div class="field data-field">
+          <label for="data-input">排序数据</label>
+          <textarea id="data-input" rows="1" spellcheck="false">8, 3, 5, 1, 9, 4</textarea>
+          <p class="hint">用英文逗号分隔，支持 2 到 30 个数字。</p>
+        </div>
+
+        <div class="button-row">
+          <button id="apply-data" type="button">应用数据</button>
+          <button id="random-data" type="button" class="secondary">随机生成</button>
+        </div>
+
+        <div class="button-grid">
+          <button id="play-pause" type="button">开始</button>
+          <button id="step" type="button" class="secondary">下一步</button>
+          <button id="reset" type="button" class="ghost">重置</button>
+        </div>
+
+        <p id="error-message" class="error-message" role="alert"></p>
+
+        <section class="code-panel" aria-label="核心 C++ 代码">
+          <div class="code-panel-header">
+            <p class="stage-kicker">C++ Core</p>
+            <span class="code-badge">同步高亮</span>
+          </div>
+          <pre id="cpp-code" class="cpp-code" aria-live="polite"></pre>
+        </section>
+      </aside>
+
+      <section class="visual-stage" aria-label="排序可视化区域">
+        <div class="stage-header">
+          <div>
+            <p class="stage-kicker">当前步骤</p>
+            <h2 id="step-title">准备开始</h2>
+          </div>
+          <div class="progress-pill">
+            <span id="step-counter">0 / 0</span>
+          </div>
+        </div>
+
+        <div id="bars" class="bars" aria-label="柱状图"></div>
+
+        <div class="legend" aria-label="颜色图例">
+          <span><i class="legend-dot comparing"></i>比较</span>
+          <span><i class="legend-dot active"></i>当前元素</span>
+          <span><i class="legend-dot minimum"></i>当前最小值</span>
+          <span><i class="legend-dot sorted"></i>已就位</span>
+        </div>
+
+        <section class="explain-panel">
+          <div>
+            <p class="stage-kicker">算法说明</p>
+            <h2 id="algorithm-name">冒泡排序</h2>
+          </div>
+          <p id="algorithm-description"></p>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
