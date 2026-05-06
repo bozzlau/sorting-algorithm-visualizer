@@ -478,6 +478,18 @@ function getBarHeight(value, min, range) {
   return 18 + normalized * 82;
 }
 
+function getRenderedBarHeight(value, step, min, range, isInsertion) {
+  if (value !== null) {
+    return getBarHeight(value, min, range);
+  }
+
+  if (isInsertion && step.floating) {
+    return getBarHeight(step.floating.value, min, range);
+  }
+
+  return 20;
+}
+
 function renderFloatingKey(step) {
   if (!step.floating) {
     return;
@@ -511,7 +523,7 @@ function renderBars(step) {
 
     const bar = document.createElement("div");
     const isPlaceholder = value === null;
-    const height = isPlaceholder ? 20 : getBarHeight(value, min, range);
+    const height = getRenderedBarHeight(value, step, min, range, isInsertion);
     bar.className = isPlaceholder ? "bar placeholder" : "bar";
     bar.style.height = `${height}%`;
 
